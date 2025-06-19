@@ -18,11 +18,11 @@ jobs:
         run: |
           pip install pyinstaller
           pyinstaller --onefile main.py
-      - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: prompts-linux
-          path: dist/main
+            name: prompts-linux
+            path: dist/main
 
   build-windows:
     name: Build Windows App
@@ -40,7 +40,7 @@ jobs:
           pyinstaller --onefile --windowed main.py
         shell: cmd
       - name: Upload Windows Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: prompts-win
           path: dist/main.exe
@@ -60,7 +60,7 @@ jobs:
           pip install pyinstaller
           pyinstaller --onefile main.py
       - name: Upload macOS Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: prompts-mac
           path: dist/main
