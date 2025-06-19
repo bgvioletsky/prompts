@@ -364,7 +364,7 @@ class PromptCombinerApp:
         # 远程plist文件地址文本框
         ttk.Label(remote_frame, text="远程PLIST地址:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
         self.remote_prompt_url_textbox = ttk.Entry(remote_frame, width=40)
-        self.remote_prompt_url_textbox.insert(0, "https://raw.githubusercontent.com/luzamm/PromptCombiner/master/default.plist")
+        self.remote_prompt_url_textbox.insert(0, "https://raw.githubusercontent.com/bgvioletsky/prompts/refs/heads/main/default.plist")
         self.remote_prompt_url_textbox.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 
         # 应用远程prompt按钮
