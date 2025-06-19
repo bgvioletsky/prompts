@@ -1,0 +1,66 @@
+name: 'Multi-platform Build'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    name: Build Linux App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pyinstaller --onefile main.py
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: prompts-linux
+          path: dist/main
+
+  build-windows:
+    name: Build Windows App
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pyinstaller --onefile --windowed main.py
+        shell: cmd
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: prompts-win
+          path: dist/main.exe
+
+  build-mac:
+    name: Build macOS App
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pyinstaller --onefile main.py
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: prompts-mac
+          path: dist/main
