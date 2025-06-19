@@ -38,6 +38,8 @@ jobs:
         run: |
           pip install pyinstaller
           pyinstaller --onefile --windowed main.py
+          mv dist/main.exe dist/prompts.exe
+          echo "prompts提示词软件" >> release.txt
         shell: cmd
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
@@ -50,8 +52,8 @@ jobs:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
              tag_name: 0.0.1
-             body_path: "prompts"
-             files: dist/main.exe
+             body_path: release.txt
+             files: dist/*.exe
 
   build-mac:
     name: Build macOS App
