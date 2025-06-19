@@ -23,7 +23,7 @@ jobs:
         with:
             name: prompts-linux
             path: dist/main
-
+      
   build-windows:
     name: Build Windows App
     runs-on: windows-latest
@@ -44,6 +44,14 @@ jobs:
         with:
           name: prompts-win
           path: dist/main.exe
+      - name: 发布到release
+        uses: softprops/action-gh-release@v1
+        env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+             tag_name: 0.0.1
+             body_path: "prompts"
+             files: dist/main.exe
 
   build-mac:
     name: Build macOS App
