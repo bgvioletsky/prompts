@@ -16,8 +16,9 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install pyinstaller
-          pyinstaller --onefile main.py
+          pip install pyinstaller Pillow
+          pyinstaller --onefile --windowed --icon=icon.ico main.py
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -36,8 +37,8 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install pyinstaller
-          pyinstaller --onefile --windowed main.py
+          pip install pyinstaller Pillow
+          pyinstaller --onefile --windowed --icon=icon.ico main.py
           mv dist/main.exe dist/prompts.exe
           echo "prompts提示词软件" >> release.txt
         shell: cmd
@@ -67,8 +68,8 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install pyinstaller
-          pyinstaller --onefile main.py
+          pip install pyinstaller Pillow
+          pyinstaller --onefile --windowed --icon=icon.ico main.py
       - name: Upload macOS Artifact
         uses: actions/upload-artifact@v4
         with:
