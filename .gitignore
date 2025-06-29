@@ -1,4 +1,4 @@
 myenv
 dist
 build
-prompts.db
+*.db
