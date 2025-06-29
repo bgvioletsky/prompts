@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-06-29 09:51:17
-LastEditTime: 2025-06-29 16:05:54
+LastEditTime: 2025-06-29 16:17:02
 LastEditors: bgcode
 Description: 描述
 FilePath: /prompts/prompts.py
@@ -828,7 +828,7 @@ class PromptCombinerApp:
         types = cursor.fetchall()
         
         # 获取所有提示词
-        cursor.execute("SELECT id, type_id, prompt_name, prompt_text, introduction FROM prompts")
+        cursor.execute("SELECT id, type_id, prompt_name, prompt_text FROM prompts")
         prompts = cursor.fetchall()
         
         # 构建JSON数据结构
@@ -838,11 +838,10 @@ class PromptCombinerApp:
         for type_id, type_name in types:
             type_prompts = {}
             for prompt in prompts:
-                p_id, p_type_id, p_name, p_text, p_intro = prompt
+                p_id, p_type_id, p_name, p_text = prompt
                 if p_type_id == type_id:
                     type_prompts[p_name] = {
                         "prompt_text": p_text,
-                        "introduction": p_intro
                     }
             json_data[type_name] = type_prompts
         
@@ -869,9 +868,6 @@ class PromptCombinerApp:
                 
                 cursor = self.conn.cursor()
                 
-                # 清空现有数据
-                cursor.execute("DELETE FROM prompts")
-                cursor.execute("DELETE FROM prompt_types")
                 
                 if file_ext == '.json':
                     # 处理JSON文件
@@ -890,9 +886,8 @@ class PromptCombinerApp:
                         # 创建提示词
                         for prompt_name, prompt_data in prompts.items():
                             prompt_text = prompt_data.get("prompt_text", "")
-                            introduction = prompt_data.get("introduction", "")
-                            cursor.execute("INSERT INTO prompts (type_id, prompt_name, prompt_text, introduction) VALUES (?,?,?,?)",
-                                           (type_id, prompt_name, prompt_text, introduction))
+                            cursor.execute("INSERT INTO prompts (type_id, prompt_name, prompt_text) VALUES (?,?,?)",
+                                           (type_id, prompt_name, prompt_text))
                 
                 elif file_ext == '.plist':
                     # 处理PLIST文件
@@ -902,7 +897,7 @@ class PromptCombinerApp:
                         for line in f:
                             fields = line.strip().split('^')
                             if len(fields) == 4:
-                                prompt_type, prompt_name, prompt_text, introduction = fields
+                                prompt_type, prompt_name, prompt_text = fields
                                 
                                 # 如果类型不存在，创建新类型
                                 if prompt_type not in type_map:
@@ -913,8 +908,8 @@ class PromptCombinerApp:
                                     type_id = type_map[prompt_type]
                                 
                                 # 插入提示词
-                                cursor.execute("INSERT INTO prompts (type_id, prompt_name, prompt_text, introduction) VALUES (?,?,?,?)",
-                                               (type_id, prompt_name, prompt_text, introduction))
+                                cursor.execute("INSERT INTO prompts (type_id, prompt_name, prompt_text) VALUES (?,?,?)",
+                                               (type_id, prompt_name, prompt_text))
                 
                 self.conn.commit()
                 self.refresh_crud()
